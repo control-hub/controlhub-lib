@@ -1,42 +1,219 @@
-# pypi package template
+# ControlHub python package
 
-[![GitHub Workflow Status](https://img.shields.io/badge/CI/CD-Automated-success?style=flat-square&logo=github)](https://github.com/features/actions)
-[![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
-[![PyPI](https://img.shields.io/badge/PyPI-Package-3775A9?style=flat-square&logo=pypi)](https://pypi.org/)
+ControlHub is a Python automation library for Windows that provides simple APIs to control the desktop, simulate keyboard and mouse actions, and perform web-related tasks.
 
-A streamlined template for creating Python packages with an automated CI/CD pipeline.
+## Installation
+
+Install the library via pip:
+
+```bash
+pip install controlhub
+```
 
 ## Features
 
--   Automated publishing to PyPI on GitHub releases
--   Version automatically synced from GitHub release tags
--   requirements.txt support for project dependencies
--   Pre-configured setup with pyproject.toml using PEP 517/518
--   Includes build and twine for modern package distribution
-
-## Setup Guide
-
-1. **Create a new repository** from this template
-
-2. **Configure your package**
-
-    - Update `pyproject.toml` with your package metadata (name, author, description)
-    - Version is automatically set from GitHub release tags during release publishing
-    - Edit `requirements.txt` to include your package dependencies
-    - Place your code inside your package folder (e.g., `your_package/`, in this example `summing_lixelv/`)
-
-3. **Set up CI/CD**
-
-    - Generate a PyPI API token: [Get PyPI token](https://pypi.org/manage/account/token/)
-    - Add the token as `PYPI_TOKEN` in GitHub Secrets: [Create GitHub secret](https://github.com/<YOUR_GITHUB_USERNAME>/<YOUR_GITHUB_REPOSITORY>/settings/secrets/actions)
-    - Replace `<YOUR_GITHUB_USERNAME>` and `<YOUR_GITHUB_REPOSITORY>` with your actual GitHub account and repository names
-
-4. **Release your package**
-    - Create a GitHub release with a semantic version tag (e.g., `v1.0.0`)
-    - The workflow will automatically update the version, build, and publish your package to PyPI
+-   Open files and run programs
+-   Simulate mouse clicks, movements, and drags
+-   Simulate keyboard input and key combinations
+-   Download files from the web
+-   Open URLs in the default browser
 
 ---
 
-<div align="center">
-  <code>pip install your-package-name</code>
-</div>
+## API Reference & Usage Examples
+
+### `controlhub.desktop`
+
+#### `open_file(path: str) -> None`
+
+Open a file with the default application.
+
+```python
+from controlhub import open_file
+
+open_file("C:\\Users\\User\\Documents\\file.txt")
+open_file("example.pdf")
+open_file("image.png")
+```
+
+#### `cmd(command: str) -> None`
+
+Execute a shell command asynchronously.
+
+```python
+from controlhub import cmd
+
+cmd("notepad.exe")
+cmd("dir")
+cmd("echo Hello World")
+```
+
+#### `run_program(program_name: str) -> None`
+
+Search for a program by name and run it.
+
+```python
+from controlhub import run_program
+
+run_program("notepad")
+run_program("chrome")
+run_program("word")
+```
+
+#### `fullscreen(absolute: bool = False) -> None`
+
+Maximize the current window. If `absolute=True`, toggle fullscreen mode (F11).
+
+```python
+from controlhub import fullscreen
+
+fullscreen()
+fullscreen(absolute=True)
+fullscreen(absolute=False)
+```
+
+#### `search_program(program_name: str) -> str`
+
+Search for a program executable path by name.
+
+```python
+from controlhub import search_program
+
+path = search_program("notepad")
+print(path)
+
+path = search_program("chrome")
+print(path)
+
+path = search_program("word")
+print(path)
+```
+
+---
+
+### `controlhub.keyboard`
+
+#### `click(x: int = None, y: int = None, button: str = 'left') -> None`
+
+Simulate a mouse click at the given coordinates or current position.
+
+```python
+from controlhub import click
+
+click()  # Click at current position
+click(100, 200)  # Click at (100, 200)
+click(300, 400, button='right')  # Right-click at (300, 400)
+```
+
+#### `move(x: int = None, y: int = None) -> None`
+
+Move the mouse to the given coordinates.
+
+```python
+from controlhub import move
+
+move(500, 500)
+move(0, 0)
+move(1920, 1080)
+```
+
+#### `drag(x: int = None, y: int = None, x1: int = None, y1: int = None, button: str = 'left', duration: float = 0) -> None`
+
+Drag the mouse from start to end coordinates.
+
+```python
+from controlhub import drag
+
+drag(100, 100, 200, 200)
+drag(300, 300, 400, 400, button='right')
+drag(500, 500, 600, 600, duration=1.5)
+```
+
+#### `get_position() -> tuple[int, int]`
+
+Get the current mouse position.
+
+```python
+from controlhub import get_position
+
+pos = get_position()
+print(pos)
+
+x, y = get_position()
+print(f"Mouse is at ({x}, {y})")
+```
+
+#### `press(*keys: Union[str, Key]) -> None`
+
+Simulate pressing and releasing keys.
+
+```python
+from controlhub import press
+
+press('ctrl', 'c')  # Copy
+press('ctrl', 'v')  # Paste
+press('alt', 'tab')  # Switch window
+```
+
+#### `hold(*keys: Union[str, Key])`
+
+Context manager to hold keys during a block.
+
+```python
+from controlhub import hold, press
+
+with hold('ctrl'):
+    press('c')  # Ctrl+C
+
+with hold('shift'):
+    press('left')  # Select text
+
+with hold('alt'):
+    press('tab')  # Switch window
+```
+
+#### `write(text: str) -> None`
+
+Type the given text.
+
+```python
+from controlhub import write
+
+write("Hello, world!")
+write("This is automated typing.")
+write("ControlHub is awesome!")
+```
+
+---
+
+### `controlhub.web`
+
+#### `download(url: str, directory: str = 'download') -> None`
+
+Download a file from a URL into a directory.
+
+```python
+from controlhub import download
+
+download("https://example.com/file.zip")
+download("https://example.com/image.png", directory="images")
+download("https://example.com/doc.pdf", directory="docs")
+```
+
+#### `open_url(url: str) -> None`
+
+Open a URL in the default web browser.
+
+```python
+from controlhub import open_url
+
+open_url("https://www.google.com")
+open_url("github.com")  # Will prepend http://
+open_url("https://stackoverflow.com")
+```
+
+---
+
+## License
+
+This project is licensed under the MIT License.
