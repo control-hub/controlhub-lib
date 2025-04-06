@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "summing_lixelv"
+version = "0.0.1"
+authors = [
+  { name="lixelv", email="simonefremenko@gmail.com" },
+]
+description = "collection of biblical humans and their family relations"
+readme = "README.md"
+requires-python = ">=3.0"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/lixelv/pypi-package-template"
+Issues = "https://github.com/lixelv/pypi-package-template"
