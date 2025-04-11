@@ -1,8 +1,8 @@
 # Пакет ControlHub для Python
 
-**[Читать на английском / Read this page in English](README.md)**
+**[Read this page in English / Читать на английском](README.md)**
 
-ControlHub — это библиотека для автоматизации Windows на Python, предоставляющая простые API для управления рабочим столом, имитации действий клавиатуры и мыши, а также выполнения веб-задач.
+ControlHub – это библиотека автоматизации на Python для Windows, которая позволяет легко управлять рабочим столом, имитировать действия клавиатуры и мыши, а также выполнять задачи, связанные с интернетом.
 
 ## Установка
 
@@ -14,11 +14,12 @@ pip install controlhub
 
 ## Возможности
 
--   Открытие файлов и запуск программ
--   Имитация кликов мыши, перемещений и перетаскиваний
--   Имитация ввода с клавиатуры и сочетаний клавиш
--   Загрузка файлов из интернета
--   Открытие URL-адресов в браузере по умолчанию
+-   Открывать файлы и запускать программы
+-   Имитировать клики, движения и перетаскивание мыши
+-   Имитировать ввод текста с клавиатуры и нажатие сочетаний клавиш
+-   Скачивать файлы из интернета
+-   Открывать ссылки в браузере по умолчанию
+-   Автоматическая задержка после функций, чтобы избежать ошибок
 
 ---
 
@@ -28,7 +29,7 @@ pip install controlhub
 
 ### `open_file(path: str) -> None`
 
-Открывает файл в приложении по умолчанию.
+Открыть файл в приложении по умолчанию.
 
 ```python
 from controlhub import open_file
@@ -40,7 +41,7 @@ open_file("image.png")
 
 ### `cmd(command: str) -> None`
 
-Выполняет команду оболочки асинхронно.
+Выполнить команду в командной строке асинхронно.
 
 ```python
 from controlhub import cmd
@@ -52,7 +53,7 @@ cmd("echo Hello World")
 
 ### `run_program(program_name: str) -> None`
 
-Ищет установленную программу по имени и запускает её.
+Найти программу по названию и запустить её.
 
 ```python
 from controlhub import run_program
@@ -64,7 +65,7 @@ run_program("word")
 
 ### `fullscreen(absolute: bool = False) -> None`
 
-Разворачивает текущее окно на весь экран. Если `absolute=True` — переключает режим полноэкранного (F11).
+Развернуть текущее окно. Если `absolute=True`, включается полноэкранный режим (F11).
 
 ```python
 from controlhub import fullscreen
@@ -74,22 +75,17 @@ fullscreen(absolute=True)
 fullscreen(absolute=False)
 ```
 
-### `search_program(program_name: str) -> str`
+### `switch_to_next_window`
 
-Ищет путь к исполняемому файлу программы по имени.
+Переключиться на следующее окно (только Windows): Alt + Tab
 
-```python
-from controlhub import search_program
+### `switch_to_last_window`
 
-path = search_program("notepad")
-print(path)
+Переключиться на предыдущее окно (только Windows): Alt + Shift + Tab
 
-path = search_program("chrome")
-print(path)
+### `reload_window`
 
-path = search_program("word")
-print(path)
-```
+Переключается на следующее окно дважды, возвращая фокус текущему окну.
 
 ---
 
@@ -97,19 +93,19 @@ print(path)
 
 ### `click(x: int = None, y: int = None, button: str = 'left') -> None`
 
-Имитация щелчка мышью по заданным координатам или в текущей позиции.
+Имитация клика мышью по указанным координатам или текущему положению курсора.
 
 ```python
 from controlhub import click
 
-click()  # Щелкнуть в текущей позиции
-click(100, 200)  # Щелкнуть по координатам (100, 200)
-click(300, 400, button='right')  # Правый щелчок по координатам (300, 400)
+click()  # Клик в текущей позиции
+click(100, 200)  # Клик по координатам (100, 200)
+click(300, 400, button='right')  # Правый клик (300, 400)
 ```
 
 ### `move(x: int = None, y: int = None) -> None`
 
-Перемещает курсор мыши в указанные координаты.
+Переместить мышь в указанные координаты.
 
 ```python
 from controlhub import move
@@ -121,7 +117,7 @@ move(1920, 1080)
 
 ### `drag(x: int = None, y: int = None, x1: int = None, y1: int = None, button: str = 'left', duration: float = 0) -> None`
 
-Перетаскивает мышь из одной точки в другую.
+Перетащить мышь из одной точки в другую.
 
 ```python
 from controlhub import drag
@@ -133,7 +129,7 @@ drag(500, 500, 600, 600, duration=1.5)
 
 ### `get_position() -> tuple[int, int]`
 
-Возвращает текущие координаты курсора мыши.
+Получить текущую позицию курсора мыши.
 
 ```python
 from controlhub import get_position
@@ -142,48 +138,50 @@ pos = get_position()
 print(pos)
 
 x, y = get_position()
-print(f"Положение мыши: ({x}, {y})")
+print(f"Мышь находится в ({x}, {y})")
 ```
 
-### `press(*keys: Union[str, Key]) -> None`
+### `press(*keys: Union[AnyKey, Iterable[AnyKey]]) -> None`
 
-Имитирует нажатие и отпускание одной или нескольких клавиш.
+Имитация нажатий и отпускания клавиш.
 
 ```python
 from controlhub import press
 
-press('ctrl', 'c')  # Копировать
-press('ctrl', 'v')  # Вставить
-press('alt', 'tab')  # Переключение между окнами
+press(['ctrl', 'c'])  # Копировать
+press(['ctrl', 'v'])  # Вставить
+
+press(['ctrl', 'c'], ['ctrl', 'v'], "left") # Скопировать, вставить и нажать стрелку влево
 ```
 
 ### `hold(*keys: Union[str, Key])`
 
-Контекстный менеджер: удерживает клавиши во время выполнения блока кода.
+Контекстный менеджер, удерживающий клавиши во время выполнения блока.
 
 ```python
 from controlhub import hold, press
 
 with hold('ctrl'):
-    press('c')  # Удерживаем Ctrl и нажимаем C (Копировать)
+    press('c')  # Копировать
 
 with hold('shift'):
-    press('left')  # Выделение текста
+    press('left')  # Выделить текст
 
-with hold('alt'):
-    press('tab')  # Переключение между окнами
+with hold(['ctrl', 'alt']):
+    press('tab') # Ctrl+Alt+Tab
+    pass # И дальше любой выполненный код будет выполнен с зажатыми ctrl, alt
 ```
 
 ### `write(text: str) -> None`
 
-Вводит указанный текст.
+Ввод заданного текста с клавиатуры.
 
 ```python
 from controlhub import write
 
 write("Привет, мир!")
 write("Это автоматический ввод текста.")
-write("ControlHub — крутая штука!")
+write("ControlHub – это круто!")
 ```
 
 ---
@@ -192,7 +190,7 @@ write("ControlHub — крутая штука!")
 
 ### `download(url: str, directory: str = 'download') -> None`
 
-Скачивает файл по URL в указанную папку.
+Скачать файл по ссылке в указанную директорию.
 
 ```python
 from controlhub import download
@@ -204,13 +202,13 @@ download("https://example.com/doc.pdf", directory="docs")
 
 ### `open_url(url: str) -> None`
 
-Открывает веб-страницу в браузере по умолчанию.
+Открыть ссылку в браузере по умолчанию.
 
 ```python
 from controlhub import open_url
 
 open_url("https://www.google.com")
-open_url("github.com")  # Автоматически добавит http://
+open_url("github.com")  # автоматически добавится http://
 open_url("https://stackoverflow.com")
 ```
 
@@ -218,4 +216,4 @@ open_url("https://stackoverflow.com")
 
 ## Лицензия
 
-Этот проект распространяется под лицензией MIT.
+Проект распространяется под лицензией MIT.

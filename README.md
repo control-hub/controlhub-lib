@@ -19,6 +19,7 @@ pip install controlhub
 -   Simulate keyboard input and key combinations
 -   Download files from the web
 -   Open URLs in the default browser
+-   Auto delay added to functions to prevent some errors
 
 ---
 
@@ -74,22 +75,17 @@ fullscreen(absolute=True)
 fullscreen(absolute=False)
 ```
 
-### `search_program(program_name: str) -> str`
+### `switch_to_next_window`
 
-Search for a program executable path by name.
+Switches to next window (only Windows): Alt + Tab
 
-```python
-from controlhub import search_program
+### `switch_to_last_window`
 
-path = search_program("notepad")
-print(path)
+Switches to last window (only Windows): Alt + Shift + Tab
 
-path = search_program("chrome")
-print(path)
+### `reload_window`
 
-path = search_program("word")
-print(path)
-```
+Makes `switch_to_next_window` 2 times to make current window active
 
 ---
 
@@ -145,16 +141,17 @@ x, y = get_position()
 print(f"Mouse is at ({x}, {y})")
 ```
 
-### `press(*keys: Union[str, Key]) -> None`
+### `press(*keys: Union[AnyKey, Iterable[AnyKey]]) -> None`
 
 Simulate pressing and releasing keys.
 
 ```python
 from controlhub import press
 
-press('ctrl', 'c')  # Copy
-press('ctrl', 'v')  # Paste
-press('alt', 'tab')  # Switch window
+press(['ctrl', 'c'])  # Copy
+press(['ctrl', 'v'])  # Paste
+
+press(['ctrl', 'c'], ['ctrl', 'v'], "left") # Copy and paste in 1 line and press left arrow
 ```
 
 ### `hold(*keys: Union[str, Key])`
@@ -170,8 +167,8 @@ with hold('ctrl'):
 with hold('shift'):
     press('left')  # Select text
 
-with hold('alt'):
-    press('tab')  # Switch window
+with hold(['ctrl', 'alt']):
+    press('tab') # Ctrl+Alt+Tab, I
 ```
 
 ### `write(text: str) -> None`
