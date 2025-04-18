@@ -5,14 +5,17 @@ from .keyboard import hold, press, write
 from typing import List, Dict
 
 
-def cmd(command: str) -> None:
+def cmd(command: str, popen=False) -> None:
     """
     Executes a command in the command line.
 
     Args:
         command (str): Command to execute.
     """
-    os.system(command)
+    if popen:
+        subprocess.Popen(command, shell=True)
+    else:
+        os.system(command)
 
 
 def open_file(path: str, delay:float=0.2) -> None:
@@ -38,7 +41,7 @@ def open_file(path: str, delay:float=0.2) -> None:
     else:
         print(f"File not found: {absolute_path}")
 
-def run_program(program_name: str, delay: float=0.4) -> None:
+def run_program(program_name: str, shell: bool = False, delay: float=0.4) -> None:
     """
     Runs a program in the command line.
 
@@ -46,13 +49,13 @@ def run_program(program_name: str, delay: float=0.4) -> None:
         program_name (str): Name of the program to run.
     """
     
-    if os.name == "nt": # Windows
+    if os.name == "nt" and not shell: # Windows
         press("win")
         sleep(0.1)
         write(program_name)
         sleep(0.1)
         press("enter")
-    elif os.name == "posix": # Unix
+    elif os.name == "posix" or shell: # Unix
         subprocess.Popen(program_name, shell=True)
     
 
