@@ -67,7 +67,7 @@ def fullscreen(absolute: bool = False, delay: float=0.1) -> None:
         absolute (bool): If True, uses F11 for absolute fullscreen mode.
     """
 
-    press("win", "up")
+    press(["win", "up"])
     if absolute:
         press("f11")
 
