@@ -31,10 +31,6 @@ class JSONFile:
             file_path (str): Path to the JSON file.
         """
         self.file_path = file_path
-        
-        if not os.path.exists(file_path):
-            with open(file_path, 'w', encoding='utf-8') as f:
-                json.dump({}, f, ensure_ascii=True, indent=4)
 
     def get(self) -> dict:
         """
