@@ -14,14 +14,15 @@ pip install controlhub
 
 ## Features
 
--   Open files and run programs
--   Simulate mouse clicks, movements, and drags
--   Simulate keyboard input and key combinations
--   Download files from the web
--   Open URLs in the default browser
--   Auto delay added to functions to prevent some errors
-
----
+- Open files and run programs
+- Simulate mouse clicks, movements, and drags
+- Simulate keyboard input and key combinations
+- Download files from the web
+- Open URLs in the default browser
+- Auto delay added to functions to prevent some errors
+- Run shell commands
+- Use context managers for holding keys
+- Manage data in a data.json file (ControlHub service)
 
 ## API Reference & Usage Examples
 
@@ -86,8 +87,6 @@ Switches to last window (only Windows): Alt + Shift + Tab
 ### `reload_window`
 
 Makes `switch_to_next_window` 2 times to make current window active
-
----
 
 ## `controlhub.keyboard`
 
@@ -183,8 +182,6 @@ write("This is automated typing.")
 write("ControlHub is awesome!")
 ```
 
----
-
 ## `controlhub.web`
 
 ### `download(url: str, directory: str = 'download') -> None`
@@ -211,7 +208,77 @@ open_url("github.com")  # Will prepend http://
 open_url("https://stackoverflow.com")
 ```
 
----
+## `controlhub.json_storage`
+
+### `JSONFile(file_path: str)`
+
+Create a JSON-backed storage object to store and retrieve data, like a dictionary. All data is saved to a JSON file `file_path`.
+
+```python
+from controlhub.json_storage import JSONFile
+
+storage = JSONFile('mydata.json')
+storage.set({"key": "value"})
+print(storage.get())  # {'key': 'value'}
+```
+
+### `JSONFile.get() -> dict`
+
+Read and return all data from the file.
+
+```python
+print(storage.get())
+# Output: {"key": "value"}
+```
+
+### `JSONFile.set(data: dict) -> None`
+
+Completely replace the file contents.
+
+```python
+storage.set({"new_key": "new_value"})
+print(storage.get())
+```
+
+### `JSONFile.merge(data: dict) -> dict`
+
+Merge new data into the file without losing existing fields.
+
+```python
+storage.merge({"another_key": {"nested": "value"}})
+print(storage.get())
+```
+
+### `JSONFile` magic methods
+
+You can also use `JSONFile` like a dictionary:
+
+```python
+storage["name"] = "ControlHub"
+print(storage["name"])  # Output: ControlHub
+
+del storage["name"]
+
+print("name" in storage)  # Output: False
+
+for key in storage:
+    print(key)
+```
+
+### `data`
+
+Default storage pointing to `data.json`. Mostly used for ControlHub service.
+
+```python
+from controlhub import data
+
+data["key"] = "value"
+data["another_key"] = {"a": "b", "b": "new_value"}
+print(data["key"])  # Output: "value"
+
+data.merge({"another_key": {"b": "updated_value"}})
+print(data["another_key"]["b"])  # Output: "updated_value"
+```
 
 ## License
 

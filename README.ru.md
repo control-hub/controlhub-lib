@@ -2,7 +2,7 @@
 
 **[Read this page in English / Читать на английском](README.md)**
 
-ControlHub – это библиотека автоматизации на Python для Windows, которая позволяет легко управлять рабочим столом, имитировать действия клавиатуры и мыши, а также выполнять задачи, связанные с интернетом.
+ControlHub — это библиотека автоматизации на Python для Windows, которая предоставляет простые API для управления рабочим столом, имитации действий клавиатуры и мыши, а также выполнения задач, связанных с интернетом.
 
 ## Установка
 
@@ -14,14 +14,15 @@ pip install controlhub
 
 ## Возможности
 
--   Открывать файлы и запускать программы
--   Имитировать клики, движения и перетаскивание мыши
--   Имитировать ввод текста с клавиатуры и нажатие сочетаний клавиш
--   Скачивать файлы из интернета
--   Открывать ссылки в браузере по умолчанию
--   Автоматическая задержка после функций, чтобы избежать ошибок
-
----
+- Открытие файлов и запуск программ
+- Имитация кликов мыши, перемещений и перетаскиваний
+- Имитация ввода текста с клавиатуры и нажатия сочетаний клавиш
+- Скачивание файлов из интернета
+- Открытие ссылок в браузере по умолчанию
+- Автоматическая задержка для предотвращения ошибок
+- Выполнение shell-команд
+- Управление удержанием клавиш через контекстные менеджеры
+- Работа с данными в файле `data.json` (сервис ControlHub)
 
 ## API и примеры использования
 
@@ -65,7 +66,7 @@ run_program("word")
 
 ### `fullscreen(absolute: bool = False) -> None`
 
-Развернуть текущее окно. Если `absolute=True`, включается полноэкранный режим (F11).
+Развернуть текущее окно. При `absolute=True` включить полноэкранный режим (F11).
 
 ```python
 from controlhub import fullscreen
@@ -77,30 +78,28 @@ fullscreen(absolute=False)
 
 ### `switch_to_next_window`
 
-Переключиться на следующее окно (только Windows): Alt + Tab
+Переключение на следующее окно (только Windows): Alt + Tab
 
 ### `switch_to_last_window`
 
-Переключиться на предыдущее окно (только Windows): Alt + Shift + Tab
+Переключение на предыдущее окно (только Windows): Alt + Shift + Tab
 
 ### `reload_window`
 
-Переключается на следующее окно дважды, возвращая фокус текущему окну.
-
----
+Переключиться на следующее окно дважды, чтобы вернуть фокус текущему окну.
 
 ## `controlhub.keyboard`
 
 ### `click(x: int = None, y: int = None, button: str = 'left') -> None`
 
-Имитация клика мышью по указанным координатам или текущему положению курсора.
+Имитация клика мышью по указанным координатам или текущей позиции курсора.
 
 ```python
 from controlhub import click
 
-click()  # Клик в текущей позиции
-click(100, 200)  # Клик по координатам (100, 200)
-click(300, 400, button='right')  # Правый клик (300, 400)
+click()
+click(100, 200)
+click(300, 400, button='right')
 ```
 
 ### `move(x: int = None, y: int = None) -> None`
@@ -129,13 +128,10 @@ drag(500, 500, 600, 600, duration=1.5)
 
 ### `get_position() -> tuple[int, int]`
 
-Получить текущую позицию курсора мыши.
+Получить текущую позицию мыши.
 
 ```python
 from controlhub import get_position
-
-pos = get_position()
-print(pos)
 
 x, y = get_position()
 print(f"Мышь находится в ({x}, {y})")
@@ -143,54 +139,50 @@ print(f"Мышь находится в ({x}, {y})")
 
 ### `press(*keys: Union[AnyKey, Iterable[AnyKey]]) -> None`
 
-Имитация нажатий и отпускания клавиш.
+Имитация нажатий клавиш.
 
 ```python
 from controlhub import press
 
-press(['ctrl', 'c'])  # Копировать
-press(['ctrl', 'v'])  # Вставить
-
-press(['ctrl', 'c'], ['ctrl', 'v'], "left") # Скопировать, вставить и нажать стрелку влево
+press(['ctrl', 'c'])
+press(['ctrl', 'v'])
+press(['ctrl', 'c'], ['ctrl', 'v'], "left")
 ```
 
 ### `hold(*keys: Union[str, Key])`
 
-Контекстный менеджер, удерживающий клавиши во время выполнения блока.
+Контекстный менеджер для удержания клавиш.
 
 ```python
 from controlhub import hold, press
 
 with hold('ctrl'):
-    press('c')  # Копировать
+    press('c')
 
 with hold('shift'):
-    press('left')  # Выделить текст
+    press('left')
 
 with hold(['ctrl', 'alt']):
-    press('tab') # Ctrl+Alt+Tab
-    pass # И дальше любой выполненный код будет выполнен с зажатыми ctrl, alt
+    press('tab')
 ```
 
 ### `write(text: str) -> None`
 
-Ввод заданного текста с клавиатуры.
+Печать текста с помощью клавиатуры.
 
 ```python
 from controlhub import write
 
 write("Привет, мир!")
-write("Это автоматический ввод текста.")
-write("ControlHub – это круто!")
+write("Это автоматический ввод.")
+write("ControlHub – топ!")
 ```
-
----
 
 ## `controlhub.web`
 
 ### `download(url: str, directory: str = 'download') -> None`
 
-Скачать файл по ссылке в указанную директорию.
+Скачать файл по ссылке в указанную папку.
 
 ```python
 from controlhub import download
@@ -208,11 +200,80 @@ download("https://example.com/doc.pdf", directory="docs")
 from controlhub import open_url
 
 open_url("https://www.google.com")
-open_url("github.com")  # автоматически добавится http://
+open_url("github.com")
 open_url("https://stackoverflow.com")
 ```
 
----
+## `controlhub.json_storage`
+
+### `JSONFile(file_path: str)`
+
+Создать объект для хранения данных в JSON-файле.
+
+```python
+from controlhub.json_storage import JSONFile
+
+storage = JSONFile('mydata.json')
+storage.set({"key": "value"})
+print(storage.get())
+```
+
+### `JSONFile.get() -> dict`
+
+Получить все данные из файла.
+
+```python
+print(storage.get())
+```
+
+### `JSONFile.set(data: dict) -> None`
+
+Полностью заменить содержимое файла.
+
+```python
+storage.set({"new_key": "new_value"})
+print(storage.get())
+```
+
+### `JSONFile.merge(data: dict) -> dict`
+
+Объединить новые данные с существующими без перезаписи всего файла.
+
+```python
+storage.merge({"another_key": {"nested": "value"}})
+print(storage.get())
+```
+
+### `JSONFile` как словарь
+
+Можно работать с `JSONFile` как с обычным словарём:
+
+```python
+storage["name"] = "ControlHub"
+print(storage["name"])
+
+del storage["name"]
+
+print("name" in storage)
+
+for key in storage:
+    print(key)
+```
+
+### `data`
+
+Стандартный экземпляр `JSONFile`, указывающий на файл `data.json`, используется в скриптах ControlHub.
+
+```python
+from controlhub import data
+
+data["key"] = "value"
+data["another_key"] = {"a": "b", "b": "new_value"}
+print(data["key"])
+
+data.merge({"another_key": {"b": "updated_value"}})
+print(data["another_key"]["b"])
+```
 
 ## Лицензия
 

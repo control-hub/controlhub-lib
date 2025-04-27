@@ -1,8 +1,7 @@
 import os
 import subprocess
 from time import sleep
-from .keyboard import hold, press, write
-from typing import List, Dict
+from .keyboard import press, write
 
 
 def cmd(command: str, popen=False) -> None:

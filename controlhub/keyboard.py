@@ -1,5 +1,3 @@
-from decimal import Context
-from re import L
 import pyautogui
 import time
 
