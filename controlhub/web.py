@@ -2,7 +2,8 @@ import webbrowser
 import requests
 import os
 
-def download(url: str, directory: str = 'download') -> str:
+
+def download(url: str, directory: str = "download") -> str:
     """
     Downloads a file from the specified URL and saves it to the given directory.
     Handles HTTP 302 redirects and returns the final path of the downloaded file.
@@ -16,18 +17,25 @@ def download(url: str, directory: str = 'download') -> str:
     """
     response = requests.get(url, allow_redirects=True)
     final_url = response.url  # Get the final URL after redirects
-    
+
     if directory:
         if not os.path.exists(directory):
             os.makedirs(directory)
-    
-    filename = final_url.split('/')[-1]
+
+    filename = final_url.split("/")[-1]
+    original_filename = url.split("/")[-1]
+
+    if "." not in filename and "." in original_filename:
+        filename = original_filename
+
+    print(filename)
     filepath = os.path.join(directory, filename) if directory else filename
-    
-    with open(filepath, 'wb') as f:
+
+    with open(filepath, "wb") as f:
         f.write(response.content)
-    
+
     return filepath
+
 
 def open_url(url: str) -> None:
     """
@@ -36,7 +44,7 @@ def open_url(url: str) -> None:
     Args:
         url (str): URL to open.
     """
-    if not url.startswith(('http://', 'https://')):
-        url = 'http://' + url
-        
+    if not url.startswith(("http://", "https://")):
+        url = "http://" + url
+
     webbrowser.open(url)
