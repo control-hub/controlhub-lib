@@ -14,15 +14,15 @@ pip install controlhub
 
 ## Features
 
-- Open files and run programs
-- Simulate mouse clicks, movements, and drags
-- Simulate keyboard input and key combinations
-- Download files from the web
-- Open URLs in the default browser
-- Auto delay added to functions to prevent some errors
-- Run shell commands
-- Use context managers for holding keys
-- Manage data in a data.json file (ControlHub service)
+-   Open files and run programs
+-   Simulate mouse clicks, movements, and drags
+-   Simulate keyboard input and key combinations
+-   Download files from the web
+-   Open URLs in the default browser
+-   Auto delay added to functions to prevent some errors
+-   Run shell commands
+-   Use context managers for holding keys
+-   Manage data in a data.json file (ControlHub service)
 
 ## API Reference & Usage Examples
 
@@ -172,7 +172,7 @@ with hold(['ctrl', 'alt']):
 
 ### `write(text: str) -> None`
 
-Type the given text.
+Type the given text. Also supports \n.
 
 ```python
 from controlhub import write
@@ -180,6 +180,7 @@ from controlhub import write
 write("Hello, world!")
 write("This is automated typing.")
 write("ControlHub is awesome!")
+write("from controlhub import write\nwrite(\"Hello, world\")")
 ```
 
 ## `controlhub.web`

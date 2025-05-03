@@ -86,6 +86,7 @@ def get_position() -> tuple[int, int]:
 
 AnyKey = Union[str, Key]
 
+
 def convert_keys(*keys: Union[AnyKey, Iterable[AnyKey]]) -> str:
     """
     Converts a list of keys to their corresponding classes.
@@ -129,6 +130,7 @@ def convert_keys(*keys: Union[AnyKey, Iterable[AnyKey]]) -> str:
         else k
         for k in keys
     ]
+
 
 def press(*keys: Union[AnyKey, Iterable[AnyKey]], delay: float = 0.1) -> None:
     """
@@ -183,11 +185,23 @@ def hold(keys: Union[AnyKey, Iterable[AnyKey]], delay: float = 0.1):
             time.sleep(delay)
 
 
-def write(text: str) -> None:
+def write(text: str, delay=0, enter_delay=0.4) -> None:
     """
     Simulates keyboard input of the given text.
 
     Args:
         text (str): Text to type.
     """
-    keyboard.type(text)
+
+    text_lines = text.split("\n")
+
+    for i in range(len(text_lines)):
+        line = text_lines[i]
+        keyboard.type(line)
+
+        if i != len(text_lines) - 1:
+            print(i, line)
+            press("enter", delay=enter_delay)
+
+    if delay > 0:
+        time.sleep(delay)
