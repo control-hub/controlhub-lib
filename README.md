@@ -90,7 +90,7 @@ Makes `switch_to_next_window` 2 times to make current window active
 
 ## `controlhub.keyboard`
 
-### `click(x: int = None, y: int = None, button: str = 'left') -> None`
+### `click(x: int = None, y: int = None, button: str = "left") -> None`
 
 Simulate a mouse click at the given coordinates or current position.
 
@@ -99,7 +99,7 @@ from controlhub import click
 
 click()  # Click at current position
 click(100, 200)  # Click at (100, 200)
-click(300, 400, button='right')  # Right-click at (300, 400)
+click(300, 400, button="right")  # Right-click at (300, 400)
 ```
 
 ### `move(x: int = None, y: int = None) -> None`
@@ -114,7 +114,7 @@ move(0, 0)
 move(1920, 1080)
 ```
 
-### `drag(x: int = None, y: int = None, x1: int = None, y1: int = None, button: str = 'left', duration: float = 0) -> None`
+### `drag(x: int = None, y: int = None, x1: int = None, y1: int = None, button: str = "left", duration: float = 0) -> None`
 
 Drag the mouse from start to end coordinates.
 
@@ -122,7 +122,7 @@ Drag the mouse from start to end coordinates.
 from controlhub import drag
 
 drag(100, 100, 200, 200)
-drag(300, 300, 400, 400, button='right')
+drag(300, 300, 400, 400, button="right")
 drag(500, 500, 600, 600, duration=1.5)
 ```
 
@@ -147,10 +147,10 @@ Simulate pressing and releasing keys.
 ```python
 from controlhub import press
 
-press(['ctrl', 'c'])  # Copy
-press(['ctrl', 'v'])  # Paste
+press(["ctrl", "c"])  # Copy
+press(["ctrl", "v"])  # Paste
 
-press(['ctrl', 'c'], ['ctrl', 'v'], "left") # Copy and paste in 1 line and press left arrow
+press(["ctrl", "c"], ["ctrl", "v"], "left") # Copy and paste in 1 line and press left arrow
 ```
 
 ### `hold(*keys: Union[str, Key])`
@@ -160,14 +160,17 @@ Context manager to hold keys during a block.
 ```python
 from controlhub import hold, press
 
-with hold('ctrl'):
-    press('c')  # Ctrl+C
+with hold("ctrl"):
+    press("c")  # Ctrl+C
 
-with hold('shift'):
-    press('left')  # Select text
+with hold("shift"):
+    press("left")  # Select text
 
-with hold(['ctrl', 'alt']):
-    press('tab') # Ctrl+Alt+Tab, I
+with hold(["ctrl", "alt"]):
+    press("tab") # Ctrl+Alt+Tab, I
+
+with hold("ctrl", "shift"):
+    press("esc") # Ctrl+Shift+Escape
 ```
 
 ### `write(text: str) -> None`
@@ -185,7 +188,7 @@ write("from controlhub import write\nwrite(\"Hello, world\")")
 
 ## `controlhub.web`
 
-### `download(url: str, directory: str = 'download') -> None`
+### `download(url: str, directory: str = "download") -> None`
 
 Download a file from a URL into a directory.
 
@@ -218,9 +221,9 @@ Create a JSON-backed storage object to store and retrieve data, like a dictionar
 ```python
 from controlhub.json_storage import JSONFile
 
-storage = JSONFile('mydata.json')
+storage = JSONFile("mydata.json")
 storage.set({"key": "value"})
-print(storage.get())  # {'key': 'value'}
+print(storage.get())  # {"key": "value"}
 ```
 
 ### `JSONFile.get() -> dict`

@@ -90,7 +90,7 @@ fullscreen(absolute=False)
 
 ## `controlhub.keyboard`
 
-### `click(x: int = None, y: int = None, button: str = 'left') -> None`
+### `click(x: int = None, y: int = None, button: str = "left") -> None`
 
 Имитация клика мышью по указанным координатам или текущей позиции курсора.
 
@@ -99,7 +99,7 @@ from controlhub import click
 
 click()
 click(100, 200)
-click(300, 400, button='right')
+click(300, 400, button="right")
 ```
 
 ### `move(x: int = None, y: int = None) -> None`
@@ -114,7 +114,7 @@ move(0, 0)
 move(1920, 1080)
 ```
 
-### `drag(x: int = None, y: int = None, x1: int = None, y1: int = None, button: str = 'left', duration: float = 0) -> None`
+### `drag(x: int = None, y: int = None, x1: int = None, y1: int = None, button: str = "left", duration: float = 0) -> None`
 
 Перетащить мышь из одной точки в другую.
 
@@ -122,7 +122,7 @@ move(1920, 1080)
 from controlhub import drag
 
 drag(100, 100, 200, 200)
-drag(300, 300, 400, 400, button='right')
+drag(300, 300, 400, 400, button="right")
 drag(500, 500, 600, 600, duration=1.5)
 ```
 
@@ -144,9 +144,9 @@ print(f"Мышь находится в ({x}, {y})")
 ```python
 from controlhub import press
 
-press(['ctrl', 'c'])
-press(['ctrl', 'v'])
-press(['ctrl', 'c'], ['ctrl', 'v'], "left")
+press(["ctrl", "c"])
+press(["ctrl", "v"])
+press(["ctrl", "c"], ["ctrl", "v"], "left")
 ```
 
 ### `hold(*keys: Union[str, Key])`
@@ -156,14 +156,17 @@ press(['ctrl', 'c'], ['ctrl', 'v'], "left")
 ```python
 from controlhub import hold, press
 
-with hold('ctrl'):
-    press('c')
+with hold("ctrl"):
+    press("c")
 
-with hold('shift'):
-    press('left')
+with hold("shift"):
+    press("left")
 
-with hold(['ctrl', 'alt']):
-    press('tab')
+with hold(["ctrl", "alt"]):
+    press("tab")
+
+with hold("ctrl", "shift"):
+    press("esc")
 ```
 
 ### `write(text: str) -> None`
@@ -181,7 +184,7 @@ write("from controlhub import write\nwrite(\"Hello, world\")")
 
 ## `controlhub.web`
 
-### `download(url: str, directory: str = 'download') -> None`
+### `download(url: str, directory: str = "download") -> None`
 
 Скачать файл по ссылке в указанную папку.
 
@@ -214,7 +217,7 @@ open_url("https://stackoverflow.com")
 ```python
 from controlhub.json_storage import JSONFile
 
-storage = JSONFile('mydata.json')
+storage = JSONFile("mydata.json")
 storage.set({"key": "value"})
 print(storage.get())
 ```
