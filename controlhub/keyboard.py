@@ -161,7 +161,7 @@ def press(*keys: Union[AnyKey, Iterable[AnyKey]], delay: float = None) -> None:
 
     Args:
         *keys: Sequence of keys to press.
-        delay (float): Little delay between keys, by default 0.1 seconds
+        delay (float): Little delay between keys, by default `BASE_DELAY` seconds
 
     Examples:
         press(["ctrl", "a"], "backspace")
@@ -228,8 +228,8 @@ def write(text: str, delay: float = None, enter_delay: float = None) -> None:
 
     Args:
         text (str): Text to type.
-        delay (float): Little delay after written text, by default 0.1 seconds
-        enter_delay (float): Little delay between lines and enter presses, by default 0.4 seconds
+        delay (float): Little delay after written text, by default 0 seconds
+        enter_delay (float): Little delay between lines and enter presses, by default `BASE_DELAY` * 4 seconds
     """
 
     text_lines = text.split("\n")

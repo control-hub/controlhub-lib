@@ -31,9 +31,9 @@ def open_file(path: str, delay: float = None) -> None:
     if os.path.exists(absolute_path):
         if os.name == "nt":  # Windows
             press(["win", "r"])
-            sleep(0.1)
+            sleep(BASE_DELAY)
             write(absolute_path)
-            sleep(0.1)
+            sleep(BASE_DELAY)
             press("enter")
         elif os.name == "posix":  # Unix
             subprocess.call(("xdg-open", absolute_path))
