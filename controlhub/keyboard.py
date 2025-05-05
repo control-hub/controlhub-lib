@@ -4,6 +4,7 @@ import time
 from contextlib import contextmanager
 from pynput.keyboard import Controller, Key
 from typing import Union, Iterable
+from .config import BASE_DELAY
 
 keyboard = Controller()
 
@@ -50,7 +51,7 @@ special_keys = {
 
 
 def click(
-    x: int = None, y: int = None, button: str = "left", delay: float = 0.1
+    x: int = None, y: int = None, button: str = "left", delay: float = None
 ) -> None:
     """
     Simulates a mouse click at the given coordinates.
@@ -60,6 +61,7 @@ def click(
         y (int, optional): Y-coordinate. If None, uses current position.
         button (str): Mouse button ('left', 'right', 'middle'). Defaults to 'left'.
     """
+    delay = delay or BASE_DELAY
     current_pos = pyautogui.position()
     x = x if x is not None else current_pos.x
     y = y if y is not None else current_pos.y
@@ -153,7 +155,7 @@ def convert_keys(
     ]
 
 
-def press(*keys: Union[AnyKey, Iterable[AnyKey]], delay: float = 0.1) -> None:
+def press(*keys: Union[AnyKey, Iterable[AnyKey]], delay: float = None) -> None:
     """
     Presses keys on a keyboard.
 
@@ -166,7 +168,7 @@ def press(*keys: Union[AnyKey, Iterable[AnyKey]], delay: float = 0.1) -> None:
         press(["Ctrl", "Alt", "Delete"])
         press("Caps_Lock", "caps")
     """
-
+    delay = delay or BASE_DELAY
     keys = convert_keys(*keys)
 
     for key in keys:
@@ -186,7 +188,7 @@ def press(*keys: Union[AnyKey, Iterable[AnyKey]], delay: float = 0.1) -> None:
 
 
 @contextmanager
-def hold(*keys: Union[AnyKey, Iterable[AnyKey]], delay: float = 0.1):
+def hold(*keys: Union[AnyKey, Iterable[AnyKey]], delay: float = None):
     """
     Simulates key presses.
 
@@ -197,6 +199,8 @@ def hold(*keys: Union[AnyKey, Iterable[AnyKey]], delay: float = 0.1):
         with hold("ctrl", "a"):
         with hold(["ctrl", "a"])
     """
+    delay = delay or BASE_DELAY
+
     if len(keys) == 1:
         keys = keys[0]
 
@@ -218,7 +222,7 @@ def hold(*keys: Union[AnyKey, Iterable[AnyKey]], delay: float = 0.1):
             time.sleep(delay)
 
 
-def write(text: str, delay: float = 0, enter_delay: float = 0.4) -> None:
+def write(text: str, delay: float = None, enter_delay: float = None) -> None:
     """
     Simulates keyboard input of the given text.
 
@@ -229,6 +233,8 @@ def write(text: str, delay: float = 0, enter_delay: float = 0.4) -> None:
     """
 
     text_lines = text.split("\n")
+    delay = delay or BASE_DELAY * 0
+    enter_delay = enter_delay or BASE_DELAY * 4
 
     for i in range(len(text_lines)):
         line = text_lines[i]
