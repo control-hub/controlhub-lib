@@ -23,6 +23,10 @@ pip install controlhub
 -   Run shell commands
 -   Use context managers for holding keys
 -   Manage data in a data.json file (ControlHub service)
+-   Changing basic delay value by changing the environment variable `CH_DELAY`
+
+> [!NOTE]
+> The basic delay is 0.2 seconds by default, but it can be changed by changing the environment variable `CH_DELAY`. For controlhub users, you can change this in .env file in program folder.
 
 ## API Reference & Usage Examples
 
