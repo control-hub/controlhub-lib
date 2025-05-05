@@ -28,7 +28,6 @@ def download(url: str, directory: str = "download") -> str:
     if "." not in filename and "." in original_filename:
         filename = original_filename
 
-    print(filename)
     filepath = os.path.join(directory, filename) if directory else filename
 
     with open(filepath, "wb") as f:
