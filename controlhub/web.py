@@ -16,19 +16,23 @@ def download(url: str, directory: str = "download") -> str:
         str: The final path of the downloaded file.
     """
     response = requests.get(url, allow_redirects=True)
-    final_url = response.url  # Get the final URL after redirects
+    cd = response.headers.get("Content-Disposition", "")
+    if "filename=" in cd:
+        filename = cd.split("filename=")[-1].strip('"; ')
+    else:
+        filename = response.url.split("?")[0].rsplit("/", 1)[-1]
+
+    # fallback на оригинальное имя, если в новом нет расширения
+    original = url.rsplit("/", 1)[-1]
+    
+    if "." not in filename and "." in original:
+        filename = original
 
     if directory:
-        if not os.path.exists(directory):
-            os.makedirs(directory)
-
-    filename = final_url.split("/")[-1]
-    original_filename = url.split("/")[-1]
-
-    if "." not in filename and "." in original_filename:
-        filename = original_filename
-
-    filepath = os.path.join(directory, filename) if directory else filename
+        os.makedirs(directory, exist_ok=True, )
+        filepath = os.path.join(directory, filename)
+    else:
+        filepath = filename
 
     with open(filepath, "wb") as f:
         f.write(response.content)
