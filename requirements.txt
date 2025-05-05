@@ -13,3 +13,4 @@ pytweening==1.2.0
 requests==2.32.3
 six==1.17.0
 urllib3==2.3.0
+wget==3.2
