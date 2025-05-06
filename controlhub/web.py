@@ -16,7 +16,7 @@ def download(url: str, directory: str = "download") -> str:
         str: The final path of the downloaded file.
     """
     if len(directory) > 0 and directory[-1] not in ("\\", "/"):
-        directory += "/"
+        directory += "\\"
 
     os.makedirs(directory, exist_ok=True)
 
