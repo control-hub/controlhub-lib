@@ -24,13 +24,16 @@ pip install controlhub
 -   Управление удержанием клавиш через контекстные менеджеры
 -   Работа с данными в файле `data.json` (сервис ControlHub)
 -   Изменение базовой задержки путём изменения переменной окружения `CH_DELAY`
+-   Взаимодействуйте с данными controlhub прямо из скрипта
 
 > [!NOTE]
-> Базовая задержка по умолчанию составляет 0.2 секунды, но её можно изменить, задав переменную окружения `CH_DELAY`. Для пользователей ControlHub это можно сделать в файле `.env` в папке с программой.
+> Базовая задержка по умолчанию составляет 0.2 секунды, но её можно изменить, задав переменную окружения `CH_DELAY`. У core скриптов по умолчанию `CH_DELAY` 0.8 секунд.
 
 ## API и примеры использования
 
 ## `controlhub.desktop`
+
+Модуль для взаимодействия с windows пк через функции.
 
 ### `open_file(path: str) -> None`
 
@@ -93,6 +96,8 @@ fullscreen(absolute=False)
 Переключиться на следующее окно дважды, чтобы вернуть фокус текущему окну.
 
 ## `controlhub.keyboard`
+
+Модуль для взаимодействия с клавиатурой и мышкой через функции.
 
 ### `click(x: int = None, y: int = None, button: str = "left") -> None`
 
@@ -188,6 +193,8 @@ write("from controlhub import write\nwrite(\"Hello, world\")")
 
 ## `controlhub.web`
 
+Модуль для взаимодействия с интернетом через функции.
+
 ### `download(url: str, directory: str = "download") -> None`
 
 Скачать файл по ссылке в указанную папку.
@@ -210,6 +217,76 @@ from controlhub import open_url
 open_url("https://www.google.com")
 open_url("github.com")
 open_url("https://stackoverflow.com")
+```
+
+## `controlhub.pocketbase`
+
+Модуль для взаимодействия с записями о компьютерах и выполнениях в pocketbase через функции.
+
+> [!ВАЖНО]
+> Функции из этого модуля могут выполняться только в скриптах controlhub.
+
+### `get_execution() -> ExecutionResponse`
+
+Возвращает выполнение из базы данных.
+
+```python
+from controlhub import get_execution
+
+print(get_execution())
+```
+
+### `update_execution(data: ExecutionRecord) -> ExecutionResponse`
+
+Обновляет выполнение в базе данных и возвращает его.
+
+```python
+from controlhub import update_execution
+
+new_execution = {
+    "status": "3",
+    "duration": 20
+}
+
+print(update_execution(new_execution))
+```
+
+### `get_computer() -> ComputerResponse`
+
+Возвращает компьютер из базы данных.
+
+```python
+from controlhub import get_computer
+
+print(get_computer())
+```
+
+### `get_offline_computer() -> ComputerResponse`
+
+Возвращает компьютер из локальной переменной окружения `COMPUTER_JSON`.
+
+```python
+from controlhub import get_offline_computer
+
+print(get_offline_computer())
+```
+
+### `update_computer(data: ExecutionRecord) -> ExecutionResponse`
+
+Обновляет компьютер в базе данных и возвращает его.
+
+```python
+from controlhub import update_computer
+
+new_computer = {
+    "data": {
+        "weather": "clear",
+        "mood": "good",
+        "vscode installed": True
+    }
+}
+
+print(update_computer(new_computer))
 ```
 
 ## `controlhub.json_storage`

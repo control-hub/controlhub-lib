@@ -162,7 +162,7 @@ class JSONFile:
         """
         
         return f"JSONFile({self.file_path})"
-    
+
 data = JSONFile('data.json')
 
 

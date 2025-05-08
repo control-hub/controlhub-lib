@@ -24,13 +24,16 @@ pip install controlhub
 -   Use context managers for holding keys
 -   Manage data in a data.json file (ControlHub service)
 -   Changing basic delay value by changing the environment variable `CH_DELAY`
+-   Interact with controlhub's data right from script
 
 > [!NOTE]
-> The basic delay is 0.2 seconds by default, but it can be changed by changing the environment variable `CH_DELAY`. For controlhub users, you can change this in .env file in program folder.
+> The basic delay is 0.2 seconds by default, but it can be changed by changing the environment variable `CH_DELAY`. In controlhub core scripts `CH_DELAY` is 0.8 by default.
 
 ## API Reference & Usage Examples
 
 ## `controlhub.desktop`
+
+Module to interact with windows pc via functions
 
 ### `open_file(path: str) -> None`
 
@@ -93,6 +96,8 @@ Switches to last window (only Windows): Alt + Shift + Tab
 Makes `switch_to_next_window` 2 times to make current window active
 
 ## `controlhub.keyboard`
+
+Module to interact with keyboard and mouse via functions
 
 ### `click(x: int = None, y: int = None, button: str = "left") -> None`
 
@@ -192,6 +197,8 @@ write("from controlhub import write\nwrite(\"Hello, world\")")
 
 ## `controlhub.web`
 
+Module to interact with internet via functions
+
 ### `download(url: str, directory: str = "download") -> None`
 
 Download a file from a URL into a directory.
@@ -216,11 +223,81 @@ open_url("github.com")  # Will prepend http://
 open_url("https://stackoverflow.com")
 ```
 
+## `controlhub.pocketbase`
+
+Module to interact with pocketbase computer and execution records via functions
+
+> [!IMPORTANT]
+> Functions from this module can be executed only in controlhub scripts
+
+### `get_execution() -> ExecutionResponse`
+
+Returns execution from database
+
+```python
+from controlhub import get_execution
+
+print(get_execution())
+```
+
+### `update_execution(data: ExecutionRecord) -> ExecutionResponse`
+
+Updates execution in database and returns it
+
+```python
+from controlhub import update_execution
+
+new_execution = {
+    "status": "3",
+    "duration": 20
+}
+
+print(update_execution(new_execution))
+```
+
+### `get_computer() -> ComputerResponse`
+
+Returns computer from database
+
+```python
+from controlhub import get_computer
+
+print(get_computer())
+```
+
+### `get_offline_computer() -> ComputerResponse`
+
+Returns computer from local env variable `COMPUTER_JSON`
+
+```python
+from controlhub import get_offline_computer
+
+print(get_offline_computer())
+```
+
+### `update_computer(data: ExecutionRecord) -> ExecutionResponse`
+
+Updates computer in database and returns it
+
+```python
+from controlhub import update_computer
+
+new_computer = {
+    "data": {
+        "weather": "clear",
+        "mood": "good",
+        "vscode installed": True
+    }
+}
+
+print(update_computer(new_computer))
+```
+
 ## `controlhub.json_storage`
 
 ### `JSONFile(file_path: str)`
 
-Create a JSON-backed storage object to store and retrieve data, like a dictionary. All data is saved to a JSON file `file_path`.
+Create a JSON-backed storage object to store and retrieve data, like a dictionary. All data is saved to a JSON file `file_path`. 
 
 ```python
 from controlhub.json_storage import JSONFile
@@ -271,21 +348,6 @@ print("name" in storage)  # Output: False
 
 for key in storage:
     print(key)
-```
-
-### `data`
-
-Default storage pointing to `data.json`. Mostly used for ControlHub service.
-
-```python
-from controlhub import data
-
-data["key"] = "value"
-data["another_key"] = {"a": "b", "b": "new_value"}
-print(data["key"])  # Output: "value"
-
-data.merge({"another_key": {"b": "updated_value"}})
-print(data["another_key"]["b"])  # Output: "updated_value"
 ```
 
 ## License
