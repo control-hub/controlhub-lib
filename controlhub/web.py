@@ -1,6 +1,6 @@
 import webbrowser
-import requests
 import os
+import wget
 
 
 def download(url: str, directory: str = "download") -> str:
@@ -15,29 +15,13 @@ def download(url: str, directory: str = "download") -> str:
     Returns:
         str: The final path of the downloaded file.
     """
-    response = requests.get(url, allow_redirects=True)
-    cd = response.headers.get("Content-Disposition", "")
-    if "filename=" in cd:
-        filename = cd.split("filename=")[-1].strip('"; ')
-    else:
-        filename = response.url.split("?")[0].rsplit("/", 1)[-1]
+    if len(directory) > 0 and directory[-1] not in ("\\", "/"):
+        directory += "\\"
 
-    # fallback на оригинальное имя, если в новом нет расширения
-    original = url.rsplit("/", 1)[-1]
-    
-    if "." not in filename and "." in original:
-        filename = original
+    os.makedirs(directory, exist_ok=True)
 
-    if directory:
-        os.makedirs(directory, exist_ok=True, )
-        filepath = os.path.join(directory, filename)
-    else:
-        filepath = filename
-
-    with open(filepath, "wb") as f:
-        f.write(response.content)
-
-    return filepath
+    final_path = wget.download(url, out=directory)
+    return final_path
 
 
 def open_url(url: str) -> None:

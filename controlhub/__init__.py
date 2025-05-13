@@ -17,8 +17,18 @@ from .keyboard import (
     write,
     get_position,
 )
-from .web import open_url, download
-from .json_storage import data, JSONFile
+from .web import (
+    open_url,
+    download,
+)
+from .pocketbase import (
+    get_execution,
+    update_execution,
+    get_offline_computer,
+    get_computer,
+    update_computer,
+)
+from .json_storage import JSONFile
 
 __all__ = [
     "open_file",
@@ -38,6 +48,10 @@ __all__ = [
     "get_position",
     "open_url",
     "download",
-    "data",
+    "get_execution",
+    "update_execution",
+    "get_offline_computer",
+    "get_computer",
+    "update_computer",
     "JSONFile",
 ]
