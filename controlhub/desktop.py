@@ -67,25 +67,27 @@ class ProcessInfo(TypedDict):
     pid: int
     name: str
 
-def kill_process(fragment: str) -> List[ProcessInfo]:
+def kill_process(fragment: str, kill: bool = True) -> List[ProcessInfo]:
     """
     Kills process by it's name fragment
     
     Args:
         fragment (str): Process name fragment
+        kill (bool): Kill found processes or not
     
     Returns:
         List[ProcessInfo]: List of killed processes
     """
     killed_processes = []
     
-    for proc in psutil.process_iter(['pid', 'name']):
+    for process in psutil.process_iter(['pid', 'name']):
         try:
-            process_info: ProcessInfo = proc.info
+            process_info: ProcessInfo = process.info
             process_name = process_info['name']
             
             if fragment.lower() in process_name.lower():
-                proc.kill()
+                if kill:
+                    process.kill()
                 killed_processes.append(process_info)
 
         except psutil.NoSuchProcess:

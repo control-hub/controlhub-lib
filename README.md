@@ -71,6 +71,18 @@ run_program("chrome")
 run_program("word")
 ```
 
+### `kill_process(fragment: str, kill: bool = True) -> List[ProcessInfo]:`
+
+Find's and kills process by its fragment
+
+```python
+from controlhub import kill_process
+
+print(kill_process("notepad", kill=False))
+print(kill_process("chrome"))
+print(kill_process("roblox"))
+```
+
 ### `fullscreen(absolute: bool = False) -> None`
 
 Maximize the current window. If `absolute=True`, toggle fullscreen mode (F11).

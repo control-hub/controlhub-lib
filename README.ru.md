@@ -71,6 +71,18 @@ run_program("chrome")
 run_program("word")
 ```
 
+### `kill_process(fragment: str, kill: bool = True) -> List[ProcessInfo]:`
+
+Находит и убивает процессы по фрагменту их названия
+
+```python
+from controlhub import kill_process
+
+print(kill_process("notepad", kill=False))
+print(kill_process("chrome"))
+print(kill_process("roblox"))
+```
+
 ### `fullscreen(absolute: bool = False) -> None`
 
 Развернуть текущее окно. При `absolute=True` включить полноэкранный режим (F11).
