@@ -1,5 +1,7 @@
 import os
 import subprocess
+import psutil
+from typing import TypedDict, List
 from time import sleep
 from .keyboard import press, write
 from .config import BASE_DELAY
@@ -61,6 +63,35 @@ def run_program(program_name: str, shell: bool = False, delay: float = None) -> 
     elif os.name == "posix" or shell:  # Unix
         subprocess.Popen(program_name, shell=True)
 
+class ProcessInfo(TypedDict):
+    pid: int
+    name: str
+
+def kill_process(fragment: str) -> List[ProcessInfo]:
+    """
+    Kills process by it's name fragment
+    
+    Args:
+        fragment (str): Process name fragment
+    
+    Returns:
+        List[ProcessInfo]: List of killed processes
+    """
+    killed_processes = []
+    
+    for proc in psutil.process_iter(['pid', 'name']):
+        try:
+            process_info: ProcessInfo = proc.info
+            process_name = process_info['name']
+            
+            if fragment.lower() in process_name.lower():
+                proc.kill()
+                killed_processes.append(process_info)
+
+        except psutil.NoSuchProcess:
+            pass
+    
+    return killed_processes
 
 def fullscreen(absolute: bool = False, delay: float = None) -> None:
     """
