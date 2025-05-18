@@ -2,7 +2,7 @@
 
 **[Read this page in Russian / Читать на русском](README.ru.md)**
 
-ControlHub is a Python automation library for Windows that provides simple APIs to control the desktop, simulate keyboard and mouse actions, and perform web-related tasks.
+This is a Python automation library for Windows that provides simple APIs to control the desktop, simulate keyboard and mouse actions, and perform web-related tasks.
 
 ## Installation
 
