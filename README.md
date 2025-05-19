@@ -22,7 +22,6 @@ pip install controlhub
 -   Auto delay added to functions to prevent some errors
 -   Run shell commands
 -   Use context managers for holding keys
--   Manage data in a data.json file (ControlHub service)
 -   Changing basic delay value by changing the environment variable `CH_DELAY`
 -   Interact with controlhub's data right from script
 
