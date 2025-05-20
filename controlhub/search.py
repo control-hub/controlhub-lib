@@ -47,16 +47,16 @@ def search_best_lnk(query: str, paths: list[str]) -> str | None:
 
     matched = []
 
-    # Прямое совпадение
+    # Direct
     for path, name in candidates:
         if name.lower().startswith(query_lower):
-            matched.append((path, name, 1000))  # высокий фиксированный скор
+            matched.append((path, name, 1000))
 
-    # Подстрока
+    # Substring
     if not matched:
         for path, name in candidates:
             if query_lower in name.lower():
-                matched.append((path, name, 500))  # чуть ниже скор
+                matched.append((path, name, 500))
 
     # Fuzzy
     if not matched:
@@ -68,11 +68,10 @@ def search_best_lnk(query: str, paths: list[str]) -> str | None:
     if not matched:
         return None
 
-    # Сортируем: сначала по score (по убыванию), потом по длине имени (по возрастанию)
+    # Sort by score and length of name
     matched.sort(key=lambda x: (-x[2], len(x[1])))
 
     return matched[0][0]
-
 
 def index_programs():
     """
