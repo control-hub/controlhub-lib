@@ -60,7 +60,7 @@ cmd("echo Hello World")
 
 ### `run_program(program_name: str) -> None`
 
-Найти программу по названию и запустить её.
+Найти программу по названию и запустить её. Возвращает путь к программе (на Windows, иначе None).
 
 ```python
 from controlhub import run_program
@@ -68,6 +68,8 @@ from controlhub import run_program
 run_program("notepad")
 run_program("chrome")
 run_program("word")
+run_program("cmd")
+run_program("vscode")
 ```
 
 ### `kill_process(fragment: str, kill: bool = True) -> List[ProcessInfo]:`

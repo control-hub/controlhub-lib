@@ -60,7 +60,7 @@ cmd("echo Hello World")
 
 ### `run_program(program_name: str) -> None`
 
-Search for a program by name and run it.
+Search for a program by name and run it. Returns path to the program's link (on Windows otherwise None).
 
 ```python
 from controlhub import run_program
@@ -68,6 +68,8 @@ from controlhub import run_program
 run_program("notepad")
 run_program("chrome")
 run_program("word")
+run_program("cmd")
+run_program("vscode")
 ```
 
 ### `kill_process(fragment: str, kill: bool = True) -> List[ProcessInfo]:`

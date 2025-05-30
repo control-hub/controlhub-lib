@@ -5,7 +5,7 @@ from typing import TypedDict, List
 from time import sleep
 from .keyboard import press, write
 from .config import BASE_DELAY
-
+from .search import search_best_lnk, index_programs
 
 def cmd(command: str, popen=False) -> None:
     """
@@ -45,23 +45,27 @@ def open_file(path: str, delay: float = None) -> None:
         print(f"File not found: {absolute_path}")
 
 
-def run_program(program_name: str, shell: bool = False, delay: float = None) -> None:
+def run_program(prompt: str, delay: float = None, use_shortcuts: bool = True) -> str | None:
     """
-    Runs a program in the command line.
+    Runs a program without using gui, only indexed programs. Returns link to the program if found (on Windows, otherwise None).
 
     Args:
-        program_name (str): Name of the program to run.
+        prompt (str): Command to run.
     """
+    
     delay = delay or BASE_DELAY * 4
 
-    if os.name == "nt" and not shell:  # Windows
-        press("win")
-        sleep(BASE_DELAY)
-        write(program_name)
-        sleep(BASE_DELAY)
-        press("enter")
-    elif os.name == "posix" or shell:  # Unix
-        subprocess.Popen(program_name, shell=True)
+    if os.name == "nt":  # Windows
+        link = search_best_lnk(prompt, index_programs(), use_shortcuts=use_shortcuts)
+        subprocess.Popen(link, shell=True)
+    
+    elif os.name == "posix":  # Unix
+        link = None
+        subprocess.Popen(prompt, shell=True)
+
+    sleep(delay)
+    return link
+    
 
 class ProcessInfo(TypedDict):
     pid: int

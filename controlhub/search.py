@@ -1,16 +1,21 @@
+from functools import cache
 import os
 import subprocess
 
 user_home = os.path.expanduser("~")
 
+shortcuts = {
+    "cmd": "Command Prompt",
+    "powershell": "Windows PowerShell",
+    "explorer": "File Explorer",
+    "vscode": "Visual Studio Code",
+}
+
 index_list = [
     user_home + r"\AppData\Roaming\Microsoft\Windows\Start Menu",
     r"C:\ProgramData\Microsoft\Windows\Start Menu",
     user_home + r"\Desktop",
-    #user_home + r"\Downloads",
 ]
-
-
 
 def fuzzy_score(query: str, target: str) -> int:
     query = query.lower()
@@ -41,10 +46,13 @@ def fuzzy_score(query: str, target: str) -> int:
     return score
 
 
-def search_best_lnk(query: str, paths: list[str]) -> str | None:
+def search_best_lnk(query: str, paths: list[str], use_shortcuts: bool = True) -> str | None:
     query_lower = query.lower()
+    
+    if use_shortcuts and query_lower in shortcuts:
+        query_lower = shortcuts[query_lower]
+    
     candidates = [(path, os.path.splitext(os.path.basename(path))[0]) for path in paths]
-
     matched = []
 
     # Direct
@@ -73,6 +81,7 @@ def search_best_lnk(query: str, paths: list[str]) -> str | None:
 
     return matched[0][0]
 
+@cache
 def index_programs():
     """
     Returns a list of all .lnk files in the index list.
