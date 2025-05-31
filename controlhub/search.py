@@ -48,7 +48,6 @@ def fuzzy_score(query: str, target: str) -> int:
 
 def search_best_lnk(query: str, paths: list[str], use_shortcuts: bool = True) -> str | None:
     query_lower = query.lower()
-    
     if use_shortcuts and query_lower in shortcuts:
         query_lower = shortcuts[query_lower]
     

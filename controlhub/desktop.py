@@ -27,7 +27,7 @@ def open_file(path: str, delay: float = None) -> None:
     Args:
         path (str): Path to the file to open.
     """
-    delay = delay or BASE_DELAY * 2
+    delay = delay if delay is not None else BASE_DELAY * 2
     absolute_path = os.path.abspath(path)
 
     if os.path.exists(absolute_path):
@@ -53,15 +53,22 @@ def run_program(prompt: str, delay: float = None, use_shortcuts: bool = True) ->
         prompt (str): Command to run.
     """
     
-    delay = delay or BASE_DELAY * 4
+    delay = delay if delay is not None else BASE_DELAY * 4
+
+    startupinfo = subprocess.STARTUPINFO()
+    startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+    startupinfo.wShowWindow = subprocess.SW_HIDE
 
     if os.name == "nt":  # Windows
         link = search_best_lnk(prompt, index_programs(), use_shortcuts=use_shortcuts)
-        subprocess.Popen(link, shell=True)
+        if link is None:
+            link = prompt  # If not found, use the prompt as a fallback
+        
+        subprocess.Popen(link, shell=True, startupinfo=startupinfo)
     
     elif os.name == "posix":  # Unix
         link = None
-        subprocess.Popen(prompt, shell=True)
+        subprocess.Popen(prompt, shell=True, startupinfo=startupinfo)
 
     sleep(delay)
     return link
@@ -106,7 +113,7 @@ def fullscreen(absolute: bool = False, delay: float = None) -> None:
     Args:
         absolute (bool): If True, uses F11 for absolute fullscreen mode.
     """
-    delay = delay or BASE_DELAY
+    delay = delay if delay is not None else BASE_DELAY
 
     press(["win", "up"])
     sleep(delay)
@@ -128,7 +135,7 @@ def switch_to_next_window(delay: float = None) -> None:
     """
     Switches to the next active window.
     """
-    delay = delay or BASE_DELAY
+    delay = delay if delay is not None else BASE_DELAY
 
     _check_os()
 
@@ -141,7 +148,7 @@ def switch_to_last_window(delay: float = None) -> None:
     """
     Switches to the last active window.
     """
-    delay = delay or BASE_DELAY
+    delay = delay if delay is not None else BASE_DELAY
 
     _check_os()
 
@@ -154,7 +161,7 @@ def reload_window(delay: float = None) -> None:
     """
     Reloads the active window.
     """
-    delay = delay or BASE_DELAY
+    delay = delay if delay is not None else BASE_DELAY
 
     _check_os()
 
